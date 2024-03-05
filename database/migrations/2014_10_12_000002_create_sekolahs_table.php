@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('sekolahs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('sekolah');
+            $table->string('nama');
             $table->text('alamat');
-            $table->enum('unit_organisasi', ['utama', 'cabang']);
-            $table->foreignUuid('id_yayasan')->constrained('yayasans')->cascadeOnDelete();
+            $table->enum('unit', ['utama', 'cabang']);
+            $table->foreignUuid('yayasan_id')->constrained('yayasans')->cascadeOnDelete();
             $table->timestamps();
         });
     }

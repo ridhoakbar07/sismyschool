@@ -10,9 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('user_kategoris', function (Blueprint $table) {
+        Schema::create('user_roles', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->enum('kategori', ['Pimpinan', 'Bendahara', 'Orang Tua', 'Programmer']);
+            $table->string('role');
             $table->timestamps();
         });
     }
@@ -22,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_kategoris');
+        Schema::dropIfExists('user_roles');
     }
 };

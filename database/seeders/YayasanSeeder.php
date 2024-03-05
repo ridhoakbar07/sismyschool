@@ -16,7 +16,7 @@ class YayasanSeeder extends Seeder
     {
         DB::table('yayasans')->insert([
             'id' => Str::uuid(),
-            'Yayasan' => 'SIT Al Firdaus',
+            'nama' => 'SIT Al Firdaus',
             'created_at' => now(),
             'updated_at' => now()
         ]);

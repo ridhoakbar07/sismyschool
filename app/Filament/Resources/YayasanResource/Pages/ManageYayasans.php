@@ -4,9 +4,9 @@ namespace App\Filament\Resources\YayasanResource\Pages;
 
 use App\Filament\Resources\YayasanResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListYayasans extends ListRecords
+class ManageYayasans extends ManageRecords
 {
     protected static string $resource = YayasanResource::class;
 

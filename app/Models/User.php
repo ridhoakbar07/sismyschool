@@ -14,9 +14,9 @@ class User extends Authenticatable
 {
     use HasUuids, HasApiTokens, HasFactory, Notifiable;
 
-    public function userKategori(): BelongsTo
+    public function userRole(): BelongsTo
     {
-        return $this->belongsTo(UserKategori::class);
+        return $this->belongsTo(UserRole::class);
     }
 
     public function sekolah(): BelongsTo

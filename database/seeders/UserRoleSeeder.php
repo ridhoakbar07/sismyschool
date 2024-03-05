@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class UserKategoriSeeder extends Seeder
+class UserRoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,12 +15,12 @@ class UserKategoriSeeder extends Seeder
 
     public function run(): void
     {
-        $kategoris = ['Pimpinan', 'Bendahara', 'Orang Tua', 'Programmer'];
+        $roles = ['Pimpinan', 'Bendahara', 'Orang Tua', 'Programmer'];
 
-        foreach ($kategoris as $kategori) {
-            DB::table('user_kategoris')->insert([
+        foreach ($roles as $role) {
+            DB::table('user_roles')->insert([
                 'id' => Str::uuid(),
-                'kategori' => $kategori,
+                'role' => $role,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);

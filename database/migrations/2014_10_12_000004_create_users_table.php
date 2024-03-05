@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignUuid('id_user_kategori')->nullable()->constrained('user_kategoris')->cascadeOnDelete();
-            $table->foreignUuid('id_sekolah')->nullable()->constrained('sekolahs')->cascadeOnDelete();
+            $table->foreignUuid('user_role_id')->nullable()->constrained('user_roles')->cascadeOnDelete();
+            $table->foreignUuid('sekolah_id')->nullable()->constrained('sekolahs')->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -19,10 +19,10 @@ class SekolahSeeder extends Seeder
         
         DB::table('sekolahs')->insert([
             'id' => Str::uuid(),
-            'sekolah' => 'SIT Al Firdaus',
+            'nama' => 'SIT Al Firdaus',
             'alamat' => 'Benua Anyar',
-            'unit_organisasi' => 'utama',
-            'id_yayasan' => $yayasan->id,
+            'unit' => 'utama',
+            'yayasan_id' => $yayasan->id,
             'created_at' => now(),
             'updated_at' => now()
         ]);

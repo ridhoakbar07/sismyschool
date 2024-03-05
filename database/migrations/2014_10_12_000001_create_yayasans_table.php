@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('yayasans', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('yayasan');
+            $table->string('nama');
             $table->timestamps();
         });
     }
