@@ -26,7 +26,7 @@ class User extends Authenticatable implements FilamentUser
         if ($panel->getId() === 'app') {
             return $this->userRole->role !== "Programmer";
         }
-        
+
         return true;
     }
 
