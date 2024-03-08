@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\SekolahResource\Pages;
-use App\Filament\Resources\SekolahResource\RelationManagers;
+use App\Filament\Admin\Resources\SekolahResource\Pages;
+use App\Filament\Admin\Resources\SekolahResource\RelationManagers;
 use App\Models\Sekolah;
 use Filament\Forms;
 use Filament\Forms\Form;

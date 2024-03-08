@@ -2,7 +2,8 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\IsAdmin;
+use App\Filament\AvatarProviders\BoringAvatarsProvider;
+use App\Filament\Pages\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -27,7 +28,11 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('app')
-            ->login()
+            ->topNavigation()
+            ->login(Login::class)
+            ->profile()
+            ->registration()
+            ->passwordReset()
             ->spa()
             ->colors([
                 'primary' => Color::Lime,
@@ -55,6 +60,8 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->defaultAvatarProvider(BoringAvatarsProvider::class)
+            ;
     }
 }

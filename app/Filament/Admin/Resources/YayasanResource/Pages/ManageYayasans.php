@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\YayasanResource\Pages;
+namespace App\Filament\Admin\Resources\YayasanResource\Pages;
 
-use App\Filament\Resources\YayasanResource;
+use App\Filament\Admin\Resources\YayasanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 

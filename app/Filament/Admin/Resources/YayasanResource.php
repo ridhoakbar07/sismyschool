@@ -1,37 +1,35 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\UserRoleResource\Pages;
-use App\Filament\Resources\UserRoleResource\RelationManagers;
-use App\Models\UserRole;
+use App\Filament\Admin\Resources\YayasanResource\Pages;
+use App\Models\Yayasan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserRoleResource extends Resource
+
+class YayasanResource extends Resource
 {
-    protected static ?string $model = UserRole::class;
+    protected static ?string $model = Yayasan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static ?string $modelLabel = 'User Roles';
+    protected static ?string $modelLabel = 'Yayasan';
 
-    protected static ?string $navigationLabel = 'Role';
+    protected static ?string $navigationLabel = 'Yayasan';
+
+    // protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = 'Management';
-
-    protected static ?string $navigationParentItem = 'Users';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('role')
+                Forms\Components\TextInput::make('nama')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -43,7 +41,7 @@ class UserRoleResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('No')
                     ->rowIndex(),
-                Tables\Columns\TextColumn::make('role')
+                Tables\Columns\TextColumn::make('nama')
                     ->searchable()
                     ->sortable(),
             ])
@@ -58,14 +56,13 @@ class UserRoleResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->defaultSort('created_at', 'asc');;
+            ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageUserRoles::route('/'),
+            'index' => Pages\ManageYayasans::route('/'),
         ];
     }
 }
