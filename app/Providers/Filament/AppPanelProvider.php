@@ -27,7 +27,7 @@ class AppPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('app')
-            ->path('')
+            ->path('app')
             ->topNavigation()
             ->login(LoginAsAdmin::class)
             ->profile()

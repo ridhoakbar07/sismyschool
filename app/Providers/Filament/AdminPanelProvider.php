@@ -4,6 +4,8 @@ namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\BoringAvatarsProvider;
 use App\Filament\Pages\Auth\LoginAsUser;
+use App\Filament\Admin\Pages\Tenancy\RegisterYayasan;
+use App\Models\Yayasan;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,6 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(LoginAsUser::class)
             ->spa()
+            ->tenant(Yayasan::class)
+            ->tenantRegistration(RegisterYayasan::class)
             ->colors([
                 'primary' => Color::Slate,
             ])
@@ -59,7 +63,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('SI MySchool')
             ->favicon(asset('images/favicon.png'))
             ->defaultAvatarProvider(BoringAvatarsProvider::class)
-            // ->tenant(Yayasan::class)
             ;
     }
 }
