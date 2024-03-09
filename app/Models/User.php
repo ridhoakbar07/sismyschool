@@ -20,38 +20,6 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasUuids, HasApiTokens, HasFactory, Notifiable;
 
-    // public function getTenants(Panel $panel): Collection
-    // {
-    //     return $this->yayasan;
-    // }
-
-    // public function canAccessTenant(Model $tenant):bool{
-
-    // }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        if ($panel->getId() === 'admin') {
-            return $this->userRole->role === "Programmer";
-        }
-
-        if ($panel->getId() === 'app') {
-            return $this->userRole->role !== "Programmer";
-        }
-
-        return true;
-    }
-
-    public function userRole(): BelongsTo
-    {
-        return $this->belongsTo(UserRole::class);
-    }
-
-    public function sekolah(): BelongsTo
-    {
-        return $this->belongsTo(Sekolah::class);
-    }
-
     /**
      * The attributes that are mass assignable.
      *
@@ -82,4 +50,18 @@ class User extends Authenticatable implements FilamentUser
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return $this->role !== "Orang Tua";
+        }
+
+        if ($panel->getId() === 'app') {
+            return $this->role === "Orang Tua";
+        }
+
+        return true;
+    }
+
 }

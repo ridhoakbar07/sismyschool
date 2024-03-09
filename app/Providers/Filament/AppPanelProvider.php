@@ -3,7 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\BoringAvatarsProvider;
-use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\LoginAsAdmin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -27,9 +27,9 @@ class AppPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('app')
-            ->path('app')
+            ->path('')
             ->topNavigation()
-            ->login(Login::class)
+            ->login(LoginAsAdmin::class)
             ->profile()
             ->registration()
             ->passwordReset()
@@ -61,6 +61,8 @@ class AppPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->brandName('SI MySchool')
+            ->favicon(asset('images/favicon.png'))
             ->defaultAvatarProvider(BoringAvatarsProvider::class)
             ;
     }
