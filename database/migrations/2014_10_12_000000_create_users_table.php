@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['Admin', 'Ketua Yayasan', 'Kepala Sekolah', 'Bendahara', 'Orang Tua']);
+            $table->enum('role', ['Admin', 'Ketua Yayasan', 'Kepala Sekolah', 'Bendahara', 'Orang Tua'])->nullable()->default('Orang Tua');
             // $table->foreignUuid('user_role_id')->nullable()->constrained('user_roles')->cascadeOnDelete();
             // $table->foreignUuid('sekolah_id')->nullable()->constrained('sekolahs')->cascadeOnDelete();
             $table->rememberToken();

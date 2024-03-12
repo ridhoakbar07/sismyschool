@@ -13,6 +13,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -31,11 +32,15 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(LoginAsUser::class)
             ->spa()
-            ->tenant(Yayasan::class)
+            ->tenant(Yayasan::class, ownershipRelationship: 'yayasans', slugAttribute: 'slug')
             ->tenantRegistration(RegisterYayasan::class)
             ->colors([
-                'primary' => Color::Slate,
+                'primary' => Color::Blue,
             ])
+            ->darkMode(false)
+            ->brandName('SI MySchool')
+            ->favicon(asset('images/favicon.png'))
+            ->defaultAvatarProvider(BoringAvatarsProvider::class)
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
@@ -60,9 +65,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandName('SI MySchool')
-            ->favicon(asset('images/favicon.png'))
-            ->defaultAvatarProvider(BoringAvatarsProvider::class)
-            ;
+        ;
     }
 }
