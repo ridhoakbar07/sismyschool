@@ -1,17 +1,15 @@
 <?php
 namespace App\Filament\Admin\Pages\Tenancy;
 
-use App\Models\User;
+
 use App\Models\Yayasan;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Split;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Tenancy\RegisterTenant;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Actions\Action;
+use Illuminate\Support\HtmlString;
 
 class RegisterYayasan extends RegisterTenant
 {
@@ -24,25 +22,14 @@ class RegisterYayasan extends RegisterTenant
     {
         return $form
             ->schema([
-                Split::make([
-                    Section::make([
-                        TextInput::make('nama'),
-                        DatePicker::make('tanggal_pendirian'),
-                        Textarea::make('alamat'),
-                        TextInput::make('telp'),
-                        TextInput::make('email'),
-                        TextInput::make('slug')
-                            ->label('url-slug'),
-                    ]),
-                    Section::make([
-                        Textarea::make('visi_misi'),
-                        TextInput::make('no_status_hukum'),
-                        Select::make('pimpinan_id')
-                            ->label('Ketua Yayasan')
-                            ->options(User::where('role', 'Ketua Yayasan')->pluck('name', 'id'))
-                            ->searchable()
-                    ])->grow(true),
-                ])->from('2xl')
+                TextInput::make('nama')
+                    ->label('Nama Yayasan')
+                    ->required(),
+                TextInput::make('slug')
+                    ->label('Url Slug')
+                    ->required(),
+                Placeholder::make('')
+                    ->content(new HtmlString('<b>Setelah registrasi berhasil</b><br/>Mohon perbarui data yayasan pada menu Edit Profile'))
             ]);
     }
 
