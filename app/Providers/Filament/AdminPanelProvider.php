@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Pages\Tenancy\EditYayasanProfile;
 use App\Filament\AvatarProviders\BoringAvatarsProvider;
 use App\Filament\Pages\Auth\LoginAsUser;
 use App\Filament\Admin\Pages\Tenancy\RegisterYayasan;
@@ -34,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->tenant(Yayasan::class, ownershipRelationship: 'yayasans', slugAttribute: 'slug')
             ->tenantRegistration(RegisterYayasan::class)
+            ->tenantProfile(EditYayasanProfile::class)
             ->colors([
                 'primary' => Color::Blue,
             ])
