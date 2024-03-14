@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['Admin', 'Ketua Yayasan', 'Kepala Sekolah', 'Bendahara', 'Orang Tua']);
-            // $table->foreignUuid('user_role_id')->nullable()->constrained('user_roles')->cascadeOnDelete();
             // $table->foreignUuid('sekolah_id')->nullable()->constrained('sekolahs')->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
