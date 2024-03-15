@@ -34,11 +34,6 @@ class ProfileResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship(name: 'user')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name} | {$record->email}")
-                    ->searchable(['name', 'email'])
-                    ->preload(),
                 Forms\Components\TextInput::make('nama_awal')
                     ->required()
                     ->maxLength(255),
@@ -61,8 +56,6 @@ class ProfileResource extends Resource
                 Tables\Columns\TextColumn::make('no')
                     ->label('No.')
                     ->rowIndex(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('nama_awal')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_akhir')

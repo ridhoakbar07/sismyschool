@@ -38,6 +38,24 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('profile_id')
+                    ->relationship(name: 'profile', titleAttribute: 'nama_awal')
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('nama_awal')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('nama_akhir')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Textarea::make('alamat')
+                            ->required()
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('kontak')
+                            ->required()
+                            ->maxLength(255),
+                    ])
+                    ->searchable()
+                    ->preload(),
                 Forms\Components\Select::make('role')
                     ->options([
                         'Admin' => 'Admin',
@@ -58,13 +76,15 @@ class UserResource extends Resource
                     ->label('No.')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Username')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\ColumnGroup::make('Profile', [
+                    Tables\Columns\TextColumn::make('nama_awal'),
+                    Tables\Columns\IconColumn::make('is_featured'),
+                ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

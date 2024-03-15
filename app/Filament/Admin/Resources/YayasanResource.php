@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\YayasanResource\Pages;
 use App\Filament\Admin\Resources\YayasanResource\RelationManagers;
+use App\Models\Profile;
 use App\Models\User;
 use App\Models\Yayasan;
 use Filament\Forms;
@@ -52,7 +53,7 @@ class YayasanResource extends Resource
                     ->default(null),
                 Forms\Components\Select::make('pimpinan_id')
                     ->label('Ketua Yayasan')
-                    ->options(User::where('role', 'Ketua Yayasan')->pluck('name', 'id'))
+                    ->options(Profile::where('user.role', 'Ketua Yayasan')->pluck('nama_awal', 'user_id'))
                     ->searchable()
             ]);
     }
