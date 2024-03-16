@@ -5,10 +5,12 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\ProfileResource\Pages;
 use App\Filament\Admin\Resources\ProfileResource\RelationManagers;
 use App\Models\Profile;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -48,7 +50,7 @@ class ProfileResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('user_id')
                     ->relationship(name: 'user', titleAttribute: 'name')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name} | email : {$record->email}")
+                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->name} | email : {$record->email}")
                     ->searchable()
                     ->preload(),
             ]);
@@ -67,6 +69,21 @@ class ProfileResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kontak')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('user.id')
+                    ->default(0)
+                    ->boolean()
+                    ->action(
+                        Action::make('updateUser')
+                            ->form([
+                                Forms\Components\Select::make('userId')
+                                    ->label('Profile')
+                                    ->options(User::all()->pluck('email', 'id')),
+                            ])
+                            ->action(function (array $data, Profile $record): void {
+                                $record->user()->associate($data['userId']);
+                                $record->save();
+                            })
+                    ),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

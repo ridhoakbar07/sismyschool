@@ -4,11 +4,14 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
+use App\Models\Profile;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -64,9 +67,22 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role'),
-                Tables\Columns\IconColumn::make('profile_id')
+                Tables\Columns\IconColumn::make('profile.id')
                     ->default(0)
-                    ->boolean(),
+                    ->boolean()
+                    ->action(
+                        Action::make('updateProfile')
+                            ->form([
+                                Forms\Components\Select::make('profileId')
+                                    ->label('Profile')
+                                    ->options(Profile::all()->pluck('nama_lengkap', 'id'))
+                            ])
+                            ->action(function (array $data, User $record): void {
+                                $profile = Profile::find($data['profileId']);
+                                $profile->user_id = $record->id;
+                                $profile->save();
+                            })
+                    ),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
