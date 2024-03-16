@@ -46,6 +46,11 @@ class ProfileResource extends Resource
                 Forms\Components\TextInput::make('kontak')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('user_id')
+                    ->relationship(name: 'user', titleAttribute: 'name')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name} | email : {$record->email}")
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 

@@ -3,17 +3,15 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\YayasanResource\Pages;
-use App\Filament\Admin\Resources\YayasanResource\RelationManagers;
 use App\Models\Profile;
-use App\Models\User;
 use App\Models\Yayasan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class YayasanResource extends Resource
 {
@@ -53,7 +51,10 @@ class YayasanResource extends Resource
                     ->default(null),
                 Forms\Components\Select::make('pimpinan_id')
                     ->label('Ketua Yayasan')
-                    ->options(Profile::where('user.role', 'Ketua Yayasan')->pluck('nama_awal', 'user_id'))
+                    ->options(
+                        Profile::all()->where('user.role', 'Ketua Yayasan')
+                            ->pluck('nama_lengkap', 'user_id')
+                    )
                     ->searchable()
             ]);
     }
@@ -76,7 +77,8 @@ class YayasanResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('no_status_hukum')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('pimpinan_id')
+                Tables\Columns\TextColumn::make('user.profile.nama_lengkap')
+                    ->label('Nama Ketua')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

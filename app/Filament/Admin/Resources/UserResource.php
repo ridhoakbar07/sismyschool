@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
@@ -38,24 +39,6 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('profile_id')
-                    ->relationship(name: 'profile', titleAttribute: 'nama_awal')
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('nama_awal')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('nama_akhir')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Textarea::make('alamat')
-                            ->required()
-                            ->columnSpanFull(),
-                        Forms\Components\TextInput::make('kontak')
-                            ->required()
-                            ->maxLength(255),
-                    ])
-                    ->searchable()
-                    ->preload(),
                 Forms\Components\Select::make('role')
                     ->options([
                         'Admin' => 'Admin',
@@ -81,10 +64,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role'),
-                Tables\Columns\ColumnGroup::make('Profile', [
-                    Tables\Columns\TextColumn::make('nama_awal'),
-                    Tables\Columns\IconColumn::make('is_featured'),
-                ]),
+                Tables\Columns\IconColumn::make('profile_id')
+                    ->default(0)
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
