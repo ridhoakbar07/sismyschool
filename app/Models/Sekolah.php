@@ -29,6 +29,8 @@ class Sekolah extends Model
 
     public function kelas(): BelongsToMany
     {
-        return $this->belongsToMany(Kelas::class)->using(SekolahHasKelas::class);
+        return $this->belongsToMany(Kelas::class, 'sekolah_kelas')
+        ->using(SekolahHasKelas::class)
+        ->withTimestamps();
     }
 }

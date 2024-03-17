@@ -96,6 +96,7 @@ class SekolahResource extends Resource
                         Forms\Components\Select::make('kelas')
                             ->multiple()
                             ->relationship(name: 'kelas', titleAttribute: 'nama_kelas')
+                            ->preload()
                     ])
                     ->columns(1),
             ]);
@@ -109,16 +110,13 @@ class SekolahResource extends Resource
                     ->label('No.')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('telp')
+                    ->description(fn(Sekolah $record): string => $record->telp)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tingkat_pendidikan')
                     ->label('Tingkat'),
                 Tables\Columns\TextColumn::make('unit'),
-                Tables\Columns\TextColumn::make('yayasan.nama')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('kepsek.profile.nama_lengkap')
                     ->label('Kepala Sekolah')
                     ->searchable(),
@@ -134,6 +132,7 @@ class SekolahResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultGroup('yayasan.nama')
             ->filters([
                 //
             ])

@@ -19,7 +19,7 @@ return new class extends Migration {
 
         Schema::create('sekolah_kelas', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('sekolah_id')->constrained('users');
+            $table->foreignUuid('sekolah_id')->constrained('sekolahs');
             $table->foreignUuid('kelas_id')->constrained('kelas');
             $table->timestamps();
         });

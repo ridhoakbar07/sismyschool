@@ -13,6 +13,6 @@ class Kelas extends Model
 
     public function sekolahs(): BelongsToMany
     {
-        return $this->belongsToMany(Sekolah::class);
+        return $this->belongsToMany(Sekolah::class, 'sekolah_kelas');
     }
 }
