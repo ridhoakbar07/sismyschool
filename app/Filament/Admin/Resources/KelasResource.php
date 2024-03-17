@@ -36,7 +36,13 @@ class KelasResource extends Resource
                 Forms\Components\TextInput::make('nama_kelas')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('jenis'),
+                Forms\Components\Select::make('jenis')
+                    ->options([
+                        'Umum' => 'Umum',
+                        'Pondok' => 'Pondok',
+                        'Fullday' => 'Full Day',
+                    ])
+                    ->required(),
             ]);
     }
 
