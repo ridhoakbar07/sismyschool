@@ -62,6 +62,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Username')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('profile.nama_lengkap')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role'),
