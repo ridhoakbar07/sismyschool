@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SekolahResource extends Resource
@@ -45,19 +46,43 @@ class SekolahResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('tingkat_pendidikan')
+                Forms\Components\Select::make('tingkat_pendidikan')
+                    ->options([
+                        'PAUD' => 'PAUD',
+                        'SD' => 'SD',
+                        'SMP' => 'SMP',
+                        'SMA' => 'SMA',
+                    ])
                     ->required(),
-                Forms\Components\TextInput::make('unit')
+                Forms\Components\Select::make('unit')
+                    ->options([
+                        'Utama' => 'Utama',
+                        'Cabang' => 'Cabang',
+                    ])
                     ->required(),
                 Forms\Components\Select::make('yayasan_id')
-                    ->relationship('yayasan', 'id')
+                    ->relationship('yayasan', 'nama')
                     ->required(),
-                Forms\Components\TextInput::make('kepsek_id')
-                    ->maxLength(36)
-                    ->default(null),
-                Forms\Components\TextInput::make('bendahara_id')
-                    ->maxLength(36)
-                    ->default(null),
+                Forms\Components\Select::make('kepsek_id')
+                    ->label('Kepala Sekolah')
+                    ->relationship(
+                        name: 'kepsek',
+                        modifyQueryUsing: fn(Builder $query) => $query->where('role', '=', 'Kepala Sekolah'),
+                    )
+                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->profile->nama_lengkap}")
+                    ->required()
+                    ->preload()
+                    ->searchable(),
+                Forms\Components\Select::make('bendahara_id')
+                    ->label('Bendahara')
+                    ->relationship(
+                        name: 'bendahara',
+                        modifyQueryUsing: fn(Builder $query) => $query->where('role', '=', 'Bendahara'),
+                    )
+                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->profile->nama_lengkap}")
+                    ->required()
+                    ->preload()
+                    ->searchable(),
             ]);
     }
 
@@ -76,11 +101,13 @@ class SekolahResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tingkat_pendidikan'),
                 Tables\Columns\TextColumn::make('unit'),
-                Tables\Columns\TextColumn::make('yayasan.id')
+                Tables\Columns\TextColumn::make('yayasan.nama')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kepsek_id')
+                Tables\Columns\TextColumn::make('kepsek.profile.nama_lengkap')
+                    ->label('Kepala Sekolah')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('bendahara_id')
+                Tables\Columns\TextColumn::make('bendahara.profile.nama_lengkap')
+                    ->label('Bendahara')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

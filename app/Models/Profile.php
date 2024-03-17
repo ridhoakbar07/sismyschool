@@ -12,8 +12,8 @@ class Profile extends Model
 {
     use HasUuids, HasFactory;
 
-    public function user(): belongsTo
+    public function user(): HasOne
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 }

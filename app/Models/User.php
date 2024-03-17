@@ -8,6 +8,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,13 +63,23 @@ class User extends Authenticatable implements FilamentUser
         return true;
     }
 
-    public function profile(): HasOne
+    public function profile(): BelongsTo
     {
-        return $this->hasOne(Profile::class);
+        return $this->belongsTo(Profile::class);
     }
 
     public function yayasan(): HasOne
     {
-        return $this->hasOne(Yayasan::class);
+        return $this->hasOne(Yayasan::class, 'pimpinan_id');
+    }
+
+    public function kepsek(): HasOne
+    {
+        return $this->hasOne(Sekolah::class, 'kepsek_id');
+    }
+
+    public function bendahara(): HasOne
+    {
+        return $this->hasOne(Sekolah::class, 'bendahara_id');
     }
 }

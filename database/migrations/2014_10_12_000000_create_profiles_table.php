@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->string('nama_lengkap')->virtualAs('concat(nama_awal, \' \', nama_akhir)');
             $table->text('alamat');
             $table->string('kontak');
-            $table->foreignUuid('user_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

@@ -3,19 +3,17 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
-use App\Filament\Admin\Resources\UserResource\RelationManagers;
-use App\Models\Profile;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class UserResource extends Resource
 {
@@ -69,20 +67,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('role'),
                 Tables\Columns\IconColumn::make('profile.id')
                     ->default(0)
-                    ->boolean()
-                    ->action(
-                        Action::make('updateProfile')
-                            ->form([
-                                Forms\Components\Select::make('profileId')
-                                    ->label('Profile')
-                                    ->options(Profile::all()->pluck('nama_lengkap', 'id'))
-                            ])
-                            ->action(function (array $data, User $record): void {
-                                $profile = Profile::find($data['profileId']);
-                                $profile->user_id = $record->id;
-                                $profile->save();
-                            })
-                    ),
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -96,8 +81,43 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\Action::make('Update Profile')
+                        ->form([
+                            Forms\Components\Select::make('profile_id')
+                                ->label('Pilih profile yang tersedia')
+                                ->relationship(
+                                    name: 'profile',
+                                    titleAttribute: 'nama_lengkap',
+                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', User::whereNotNull('profile_id')->pluck('profile_id')),
+                                )
+                                ->createOptionForm([
+                                    Forms\Components\TextInput::make('nama_awal')
+                                        ->required()
+                                        ->maxLength(255),
+                                    Forms\Components\TextInput::make('nama_akhir')
+                                        ->required()
+                                        ->maxLength(255),
+                                    Forms\Components\Textarea::make('alamat')
+                                        ->required()
+                                        ->columnSpanFull(),
+                                    Forms\Components\TextInput::make('kontak')
+                                        ->required()
+                                        ->maxLength(255),
+                                ])
+                                ->prefixIcon('heroicon-m-user-circle'),
+                        ])
+                        ->action(function (array $data, User $record): void {
+                            $record->profile()->associate($data['profile_id']);
+                            $record->save();
+                        })
+                        ->icon('heroicon-m-user-circle')
+                        ->color('info'),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->link()
+                    ->label('Actions')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

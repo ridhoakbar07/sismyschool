@@ -4,12 +4,14 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\YayasanResource\Pages;
 use App\Models\Profile;
+use App\Models\User;
 use App\Models\Yayasan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -51,10 +53,13 @@ class YayasanResource extends Resource
                     ->default(null),
                 Forms\Components\Select::make('pimpinan_id')
                     ->label('Ketua Yayasan')
-                    ->options(
-                        Profile::all()->where('user.role', 'Ketua Yayasan')
-                            ->pluck('nama_lengkap', 'user_id')
+                    ->relationship(
+                        name: 'user',
+                        modifyQueryUsing: fn(Builder $query) => $query->where('role', '=', 'Ketua Yayasan'),
                     )
+                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->profile->nama_lengkap}")
+                    ->required()
+                    ->preload()
                     ->searchable()
             ]);
     }

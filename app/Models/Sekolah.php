@@ -17,6 +17,16 @@ class Sekolah extends Model
         return $this->belongsTo(Yayasan::class);
     }
 
+    public function kepsek(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'kepsek_id');
+    }
+
+    public function bendahara(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'bendahara_id');
+    }
+
     public function kelas(): BelongsToMany
     {
         return $this->belongsToMany(Kelas::class)->using(SekolahHasKelas::class);
