@@ -32,7 +32,7 @@ class SekolahResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FieldSet::make('Informasi Umum')
+                Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required()
@@ -45,60 +45,73 @@ class SekolahResource extends Resource
                             ->email()
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('alamat')
-                            ->required()
-                            ->columnSpanFull(),
                         Forms\Components\Select::make('yayasan_id')
                             ->relationship('yayasan', 'nama')
                             ->required(),
-                        Forms\Components\Select::make('unit')
-                            ->options([
-                                'Utama' => 'Utama',
-                                'Cabang' => 'Cabang',
-                            ])
-                            ->required(),
-                        Forms\Components\Select::make('tingkat_pendidikan')
-                            ->options([
-                                'PAUD' => 'PAUD',
-                                'SD' => 'SD',
-                                'SMP' => 'SMP',
-                                'SMA' => 'SMA',
-                            ])
-                            ->required(),
-                    ])
-                    ->columns(3),
-                Forms\Components\FieldSet::make('Pengelola')
-                    ->schema([
-                        Forms\Components\Select::make('kepsek_id')
-                            ->label('Kepala Sekolah')
-                            ->relationship(
-                                name: 'kepsek',
-                                modifyQueryUsing: fn(Builder $query) => $query->where('role', '=', 'Kepala Sekolah'),
-                            )
-                            ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->profile->nama_lengkap}")
+                        Forms\Components\Textarea::make('alamat')
                             ->required()
-                            ->preload()
-                            ->searchable(),
-                        Forms\Components\Select::make('bendahara_id')
-                            ->label('Bendahara')
-                            ->relationship(
-                                name: 'bendahara',
-                                modifyQueryUsing: fn(Builder $query) => $query->where('role', '=', 'Bendahara'),
-                            )
-                            ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->profile->nama_lengkap}")
-                            ->required()
-                            ->preload()
-                            ->searchable(),
-                    ])
-                    ->columns(2),
-                Forms\Components\FieldSet::make('Register Kelas')
+                            ->columnSpanFull(),
+                        Forms\Components\FieldSet::make('Pengelola')
+                            ->schema([
+                                Forms\Components\Select::make('kepsek_id')
+                                    ->label('Kepala Sekolah')
+                                    ->relationship(
+                                        name: 'kepsek',
+                                        modifyQueryUsing: fn(Builder $query) => $query->where('role', '=', 'Kepala Sekolah'),
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->profile->nama_lengkap}")
+                                    ->required()
+                                    ->preload()
+                                    ->searchable(),
+                                Forms\Components\Select::make('bendahara_id')
+                                    ->label('Bendahara')
+                                    ->relationship(
+                                        name: 'bendahara',
+                                        modifyQueryUsing: fn(Builder $query) => $query->where('role', '=', 'Bendahara'),
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->profile->nama_lengkap}")
+                                    ->required()
+                                    ->preload()
+                                    ->searchable(),
+                            ]),
+                    ])->columnSpan(2)->columns(2),
+                Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Select::make('kelas')
-                            ->multiple()
-                            ->relationship(name: 'kelas', titleAttribute: 'nama_kelas')
-                            ->preload()
-                    ])
-                    ->columns(1),
+                        Forms\Components\Section::make("Kategori")
+                            ->collapsible()
+                            ->schema([
+                                Forms\Components\Select::make('unit')
+                                    ->options([
+                                        'Utama' => 'Utama',
+                                        'Cabang' => 'Cabang',
+                                    ])
+                                    ->required(),
+                                Forms\Components\Select::make('tingkat_pendidikan')
+                                    ->options([
+                                        'PAUD' => 'PAUD',
+                                        'SD' => 'SD',
+                                        'SMP' => 'SMP',
+                                        'SMA' => 'SMA',
+                                    ])
+                                    ->required(),
+                            ])->columnSpan(1),
+                        Forms\Components\Section::make()
+                            ->description('Asosiasikan kelas untuk sekolah ini :')
+                            ->collapsible()
+                            ->schema([
+                                Forms\Components\Select::make('kelas')
+                                    ->helperText('* Multiple select')
+                                    ->multiple()
+                                    ->relationship(name: 'kelas', titleAttribute: 'nama_kelas')
+                                    ->preload()
+                            ])->columnSpan(1),
+                    ]),
+            ])
+            ->columns([
+                'default' => 3,
+                'sm' => 3,
+                'md' => 3,
+                'lg' => 3,
             ]);
     }
 
@@ -110,9 +123,7 @@ class SekolahResource extends Resource
                     ->label('No.')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama')
-                    ->description(fn(Sekolah $record): string => $record->telp)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                    ->description(fn(Sekolah $record): string => "Alamat : {$record->alamat} | Telp: {$record->telp}")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tingkat_pendidikan')
                     ->label('Tingkat'),
@@ -137,6 +148,7 @@ class SekolahResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

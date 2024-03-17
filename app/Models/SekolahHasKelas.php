@@ -9,4 +9,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class SekolahHasKelas extends Pivot
 {
     use HasUuids, HasFactory;
+
+    protected $table = "sekolah_kelas";
 }
