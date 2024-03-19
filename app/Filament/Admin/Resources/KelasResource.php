@@ -25,7 +25,7 @@ class KelasResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationGroup = 'Referensi';
+    protected static ?string $navigationGroup = 'Manajemen Yayasan';
 
     public static function form(Form $form): Form
     {
