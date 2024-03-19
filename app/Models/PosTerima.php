@@ -6,18 +6,15 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Siswa extends Model
+class PosTerima extends Model
 {
     use HasUuids, HasFactory;
 
-    public function orangTua(): BelongsTo
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'ortu_id');
+        return $this->belongsTo(Unit::class);
     }
 
-    public function kelas(): BelongsTo
-    {
-        return $this->belongsTo(Kelas::class);
-    }
 }

@@ -16,8 +16,7 @@ return new class extends Migration {
             $table->text('alamat');
             $table->string('telp');
             $table->string('email');
-            $table->enum('tingkat_pendidikan', ['PAUD', 'SD', 'SMP', 'SMA']);
-            $table->enum('unit', ['Utama', 'Cabang']);
+            $table->enum('jenis', ['Utama', 'Cabang']);
             $table->foreignUuid('yayasan_id')->constrained('yayasans');
             $table->foreignUuid('kepsek_id')->nullable()->constrained('users');
             $table->foreignUuid('bendahara_id')->nullable()->constrained('users');

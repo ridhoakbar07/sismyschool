@@ -4,17 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('unit_kelas', function (Blueprint $table) {
+        Schema::create('pos_terimas', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('nama_kelas');
-            $table->enum('jenis', ['Umum', 'Pondok', 'Fullday'])->nullable();
-            $table->foreignUuid('sekolah_id')->constrained('sekolahs');
+            $table->string('nama_pos');
+            $table->double('biaya');
+            $table->foreignUuid('unit_id')->nullable()->constrained('units');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('unit_kelas');
+        Schema::dropIfExists('pos_terimas');
     }
 };

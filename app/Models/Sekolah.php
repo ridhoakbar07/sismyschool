@@ -28,8 +28,8 @@ class Sekolah extends Model
         return $this->belongsTo(User::class, 'bendahara_id');
     }
 
-    public function unitkelas(): HasMany
+    public function units(): HasMany
     {
-        return $this->hasMany(UnitKelas::class);
+        return $this->hasMany(Unit::class);
     }
 }

@@ -5,10 +5,12 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\SekolahResource\Pages;
 use App\Filament\Admin\Resources\SekolahResource\RelationManagers;
 use App\Models\Sekolah;
+use App\Models\Unit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -45,14 +47,25 @@ class SekolahResource extends Resource
                             ->email()
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Select::make('yayasan_id')
-                            ->relationship('yayasan', 'nama')
-                            ->required(),
+                        Forms\Components\Radio::make('jenis')
+                            ->label('Jenis')
+                            ->options([
+                                'Utama' => 'Utama',
+                                'Cabang' => 'Cabang',
+                            ]),
                         Forms\Components\Textarea::make('alamat')
                             ->required()
                             ->columnSpanFull(),
-                        Forms\Components\FieldSet::make('Pengelola')
+                    ])->columnSpan(2)->columns(2),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make("Pengelola")
+                            ->collapsible()
                             ->schema([
+                                Forms\Components\Select::make('yayasan_id')
+                                    ->relationship('yayasan', 'nama')
+                                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->nama} | Ketua : {$record->user->profile->nama_lengkap}")
+                                    ->required(),
                                 Forms\Components\Select::make('kepsek_id')
                                     ->label('Kepala Sekolah')
                                     ->relationship(
@@ -73,27 +86,6 @@ class SekolahResource extends Resource
                                     ->required()
                                     ->preload()
                                     ->searchable(),
-                            ]),
-                    ])->columnSpan(2)->columns(2),
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make("Kategori")
-                            ->collapsible()
-                            ->schema([
-                                Forms\Components\Select::make('unit')
-                                    ->options([
-                                        'Utama' => 'Utama',
-                                        'Cabang' => 'Cabang',
-                                    ])
-                                    ->required(),
-                                Forms\Components\Select::make('tingkat_pendidikan')
-                                    ->options([
-                                        'PAUD' => 'PAUD',
-                                        'SD' => 'SD',
-                                        'SMP' => 'SMP',
-                                        'SMA' => 'SMA',
-                                    ])
-                                    ->required(),
                             ])->columnSpan(1),
                     ]),
             ])
@@ -115,9 +107,10 @@ class SekolahResource extends Resource
                 Tables\Columns\TextColumn::make('nama')
                     ->description(fn(Sekolah $record): string => "Alamat : {$record->alamat} | Telp: {$record->telp}")
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tingkat_pendidikan')
-                    ->label('Tingkat'),
-                Tables\Columns\TextColumn::make('unit'),
+                Tables\Columns\TextColumn::make('jenis'),
+                Tables\Columns\TextColumn::make('units.nama_unit')
+                    ->badge()
+                    ->separator(','),
                 Tables\Columns\TextColumn::make('kepsek.profile.nama_lengkap')
                     ->label('Kepala Sekolah')
                     ->searchable(),
@@ -138,7 +131,26 @@ class SekolahResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('Unit')
+                    ->form([
+                        Forms\Components\Select::make('nama_unit')
+                            ->options([
+                                'Paud' => 'Paud',
+                                'SD' => 'Sekolah Dasar',
+                                'SMP' => 'Sekolah Menengah Pertama',
+                                'SMA' => 'Sekolah Menengah Atas',
+                            ])
+                            ->required()
+                            ->columnSpanFull()
+                    ])
+                    ->action(function (array $data, Model $sekolah): void {
+                        Unit::updateOrCreate([
+                            'nama_unit' =>$data['nama_unit'],
+                            'sekolah_id' => $sekolah->id
+                        ]);
+                    })
+                    ->icon('heroicon-m-plus-circle')
+                    ->color('success'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -152,7 +164,7 @@ class SekolahResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\KelasRelationManager::class,
+            RelationManagers\UnitRelationManager::class,
         ];
     }
 

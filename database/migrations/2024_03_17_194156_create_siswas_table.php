@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->date('tanggal_lahir')->nullable();
             $table->string('tempat_lahir')->nullable();
             $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable();
+            $table->foreignUuid('kelas_id')->nullable()->constrained('kelas');
             $table->foreignUuid('ortu_id')->nullable()->constrained('users');
             $table->timestamps();
         });
