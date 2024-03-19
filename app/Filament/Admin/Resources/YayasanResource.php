@@ -27,7 +27,7 @@ class YayasanResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = 'Manajemen Umum';
+    protected static ?string $navigationGroup = 'Manajemen Yayasan';
     public static function form(Form $form): Form
     {
         return $form
