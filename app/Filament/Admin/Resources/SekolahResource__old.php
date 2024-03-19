@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SekolahResource extends Resource
+class SekolahResourceOld extends Resource
 {
     protected static ?string $model = Sekolah::class;
 
@@ -95,6 +95,16 @@ class SekolahResource extends Resource
                                     ])
                                     ->required(),
                             ])->columnSpan(1),
+                        // Forms\Components\Section::make()
+                        //     ->description('Asosiasikan kelas untuk sekolah ini :')
+                        //     ->collapsible()
+                        //     ->schema([
+                        //         Forms\Components\Select::make('kelas')
+                        //             ->helperText('* Multiple select')
+                        //             ->multiple()
+                        //             ->relationship(name: 'kelas', titleAttribute: 'nama_kelas')
+                        //             ->preload()
+                        //     ])->columnSpan(1),
                     ]),
             ])
             ->columns([
@@ -155,13 +165,11 @@ class SekolahResource extends Resource
             RelationManagers\KelasRelationManager::class,
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSekolahs::route('/'),
-            'create' => Pages\CreateSekolah::route('/create'),
-            'edit' => Pages\EditSekolah::route('/{record}/edit'),
+            'index' => Pages\ManageSekolahs::route('/'),
         ];
     }
 }

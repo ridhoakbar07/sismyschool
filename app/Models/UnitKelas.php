@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Kelas extends Model
+class UnitKelas extends Model
 {
     use HasUuids, HasFactory;
 
-    public function sekolahs(): BelongsToMany
+    public function sekolahs(): BelongsTo
     {
-        return $this->belongsToMany(Sekolah::class, 'sekolah_kelas');
+        return $this->belongsTo(Sekolah::class);
     }
+
 }
