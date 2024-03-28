@@ -64,8 +64,6 @@
                                 class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
                                 <a class="btn btn-primary px-5 py-2 me-sm-3 fs-6 fw-bolder"
                                     href="{{ route('filament.app.auth.login') }}">Login</a>
-                                <a class="btn btn-light px-5 py-2 fs-6 fw-bolder"
-                                    href="{{ route('filament.app.auth.register') }}">Daftar baru</a>
                             </div>
                         </div>
                     </div>

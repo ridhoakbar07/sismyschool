@@ -29,10 +29,8 @@ class AppPanelProvider extends PanelProvider
             ->id('app')
             ->path('app')
             ->topNavigation()
-            ->login(LoginAsAdmin::class)
+            ->login()
             ->profile()
-            ->registration()
-            ->passwordReset()
             ->spa()
             ->colors([
                 'primary' => Color::Lime,

@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->path('admin')
-            ->login(LoginAsUser::class)
+            ->login()
             ->spa()
             ->colors([
                 'primary' => Color::Slate,
@@ -58,8 +58,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandName('SI MySchool')
             ->favicon(asset('images/favicon.png'))
-            ->defaultAvatarProvider(BoringAvatarsProvider::class)
-            // ->tenant(Yayasan::class)
-            ;
+            ->defaultAvatarProvider(BoringAvatarsProvider::class);
     }
 }
